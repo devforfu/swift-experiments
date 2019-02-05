@@ -40,8 +40,6 @@ for i in 1...5 {
     list.push(i)
 }
 print(list)
-let item: Int?
-repeat {
-    item = list.pop()
-    print("Pop: \(item)")
-} while item != nil
+while let item = list.pop() {
+    print(item)
+}

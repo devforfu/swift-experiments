@@ -1,13 +1,32 @@
-let strings = ["1", "2", "three"]
+import Foundation  /// required for `range(of:)` method
 
-let maybeIntegers = strings.map { Int($0) }
-
-print("Not nil items:")
-for case let item? in maybeIntegers {
-    print(item)
+protocol Pattern {
+    func match(with string: String) -> Bool
 }
 
-print("Nil items:")
-for case nil in maybeIntegers {
-    print("nil")
+struct ExactMatch: Pattern {
+    let s: String
+    init(_ s: String) { self.s = s }
+    func match(with string: String) -> Bool {
+        return string.range(of: self.s) != nil
+    }
+}
+
+func ~=(pattern: Pattern, string: String) -> Bool {
+    return pattern.match(with: string)
+}
+
+let books = [
+    "Advanced Swift",
+    "Functional Swift",
+    "The Go Programming Language",
+    "The Swift Programming Language"]
+
+print("Books on Swift language:")
+var counter = 0
+for book in books {
+    if case ExactMatch("Swift") = book {
+        counter += 1
+        print("\(counter)) \(book)")
+    }
 }
